@@ -3,6 +3,7 @@ package com.example.funapi;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -38,5 +39,50 @@ public class FunApiServiceImpl implements FunApiServiceInt{
             sb.append(",");
         }
         return sb.toString();
+    }
+
+
+    public int[][] findClosestPoint(int[][] points, int k){
+
+        int left = 0;
+        int right = points.length-1;
+
+        while (left < right){
+
+            int j = quickSort(points, left, right);
+
+            if (j == k) break;
+            if (j < k){
+                left = j + 1;
+            }else{
+                right = j - 1;
+            }
+        }
+
+        return Arrays.copyOfRange(points, 0, k);
+    }
+
+    private int quickSort(int[][] points, int start, int end){
+        int pivot = findDisToOrigin(points[end]);
+        int i = start;
+
+        for (int j=start; j<end; j++){
+            if (findDisToOrigin(points[j]) <= pivot){
+                swap(points, i, j);
+                i++;
+            }
+        }
+        swap(points, i, end);
+        return i;
+    }
+
+    private int findDisToOrigin(int[] points){
+        return points[1]*points[1] + points[0]*points[0];
+    }
+
+    private void swap(int[][] nums, int i, int j){
+        int[] temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
     }
 }
