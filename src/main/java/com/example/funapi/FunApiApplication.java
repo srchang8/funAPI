@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class FunApiApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(FunApiApplication.class, args);
     }
 
