@@ -2,10 +2,7 @@ package com.example.funapi;
 
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class FunApiServiceImpl implements FunApiServiceInt{
@@ -84,5 +81,49 @@ public class FunApiServiceImpl implements FunApiServiceInt{
         int[] temp = nums[i];
         nums[i] = nums[j];
         nums[j] = temp;
+    }
+
+    /*
+
+    Input: n = 2, logs = ["0:start:0","1:start:2","1:end:5","0:end:6"]
+    Output: [3,4]
+
+    [0,1,  2,3,4,5,  6]
+    [0,0  [1,1,1,1]  0]
+    s      S     E   E
+
+    3,4
+
+    prevTime
+
+     */
+    public int[] calcTimeFunc(int numOfProcess, List<String> logs){
+
+        int[] result = new int[numOfProcess];
+
+        Stack<Integer> stack = new Stack();
+        int prevTime = 0;
+        for (String log : logs){
+
+            String[] l = log.split(":");
+            int id = Integer.valueOf(l[0]);
+            int currLogTime = Integer.valueOf(l[2]);
+            boolean start = l[1].equals("start");
+
+            if (start){
+
+                if (!stack.isEmpty()){
+                    int prevId = stack.peek();
+                    result[prevId] += currLogTime - prevTime - 1;
+                }
+                stack.push(id);
+            }else{
+                stack.pop();
+                result[id] += currLogTime - prevTime + 1;
+            }
+            prevTime = currLogTime;
+        }
+
+        return result;
     }
 }
