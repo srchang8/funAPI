@@ -126,4 +126,48 @@ public class FunApiServiceImpl implements FunApiServiceInt{
 
         return result;
     }
+
+
+    //"3+2*2"
+    // space
+    //end
+    public int calcString(String s){
+        int result = 0;
+
+        int lastNum = 0;
+
+        int num = 0;
+        char lastSign = '+';
+
+        for (int i=0; i<s.length(); i++){
+
+            char c = s.charAt(i);
+
+            if (Character.isDigit(c)){
+                num = num * 10 + c - '0';
+            }
+
+            if (!Character.isDigit(c) && c != ' ' || i == s.length()-1){
+
+                if (lastSign == '+'){
+                    result += lastNum;
+                    lastNum = num;
+                }else if (lastSign == '-'){
+                    result += lastNum;
+                    lastNum = -num;
+                }else if (lastSign == '/'){
+                    lastNum = lastNum / num;
+                }else if (lastSign == '*'){
+                    lastNum = lastNum * num;
+                }
+                lastSign = c;
+                num = 0;
+            }
+        }
+
+        result += lastNum;
+
+        return result;
+    }
+
 }
