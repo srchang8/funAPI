@@ -170,4 +170,85 @@ public class FunApiServiceImpl implements FunApiServiceInt{
         return result;
     }
 
+
+    //TODO: clean these up, Move them
+    class Node {
+        int val;
+        Node next;
+        Node random;
+
+        public Node(int val) {
+            this.val = val;
+            this.next = null;
+            this.random = null;
+        }
+    }
+    /*
+
+
+    Input: head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
+
+    Output: [[7,null],[13,0],[11,4],[10,2],[1,0]]
+
+
+        copy clone next to each other
+        7 7c  ->  13 13c -> 11 11c ->
+
+        point clone random to real random
+
+        seperate them
+
+     */
+
+    public Node copyRandomList(Node head){
+
+        Node dummy = new Node(-1);
+        dummy.next = head;
+
+        Node iter = head;
+
+        while (iter != null){
+
+            Node clone = new Node(iter.val);
+            clone.next = iter.next;
+            iter.next = clone;
+
+            iter = clone.next;
+
+        }
+
+        iter = head;
+        Node cloneHead = iter.next;
+
+        while (iter != null){
+
+            Node clone = iter.next;
+
+            if (iter.random != null){
+                clone.random = iter.random.next;
+            }
+
+            iter = clone.next;
+        }
+
+        iter = head;
+
+        while (iter != null){
+            Node clone = iter.next;
+
+            iter.next = clone.next;
+
+            if (clone.next != null && clone.next.next != null){
+                clone.next = clone.next.next;
+            }
+
+            iter = clone.next;
+        }
+
+        return cloneHead;
+    }
+
+
+
+
 }
